@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DatGuy’s ModdingHub</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#090910;color:white;font-family:Arial,sans-serif}
+button,input{font:inherit}
+.sidebar{position:fixed;inset:0 auto 0 0;width:235px;background:#101019;border-right:1px solid #29243b;padding:25px;z-index:5}
+.logo{font-size:21px;font-weight:bold;color:#b66aff;margin-bottom:40px;text-shadow:0 0 12px #9333ea}
+.sidebar a{display:block;padding:14px;color:#aaa;text-decoration:none;border-radius:9px;margin-bottom:8px}
+.sidebar a:hover,.sidebar a.active{background:#29203c;color:white}
+.main{margin-left:235px;padding:30px;max-width:1500px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:30px}
+.search{background:#151520;border:1px solid #39344d;padding:13px;border-radius:9px;color:white;width:260px;outline:none}
+.search:focus{border-color:#ad5cff}
+.welcome{background:linear-gradient(120deg,#401477,#111124);padding:40px;border-radius:15px;margin-bottom:35px;border:1px solid #65329a}
+.welcome h1{font-size:34px;margin-bottom:12px}
+.welcome p{color:#d2c4e2}
+.heading{margin-bottom:20px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.filter{background:#171724;border:1px solid #39344d;color:#aaa;padding:9px 15px;border-radius:20px;cursor:pointer}
+.filter.active,.filter:hover{background:#8736d6;color:white;border-color:#a855f7}
+.mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.card{background:#14141f;border:1px solid #302941;border-radius:13px;overflow:hidden;transition:.25s}
+.card:hover{transform:translateY(-5px);border-color:#a855f7;box-shadow:0 0 20px #9333ea33}
+.thumbnail{height:135px;background:linear-gradient(135deg,#32105c,#101020);display:flex;align-items:center;justify-content:center;font-size:45px}
+.card-content{padding:19px}
+.card p{color:#999;font-size:14px;line-height:1.5;margin-top:9px}
+.tag{display:inline-block;color:#c084fc;font-size:12px;margin-top:13px}
+.card button,.primary{width:100%;margin-top:17px;padding:12px;background:#8736d6;border:0;border-radius:8px;color:white;cursor:pointer}
+.card button:hover,.primary:hover{background:#a855f7}
+.page{display:none}
+.page.active{display:block}
+.about{background:#14141f;border:1px solid #302941;border-radius:13px;padding:25px;line-height:1.8;color:#bbb}
+.empty{color:#888;padding:25px 0;display:none}
+footer{margin-top:70px;padding:25px;text-align:center;color:#666;border-top:1px solid #282438}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:10;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal-box{background:#171725;border:1px solid #a855f7;border-radius:15px;padding:25px;width:100%;max-width:400px}
+.modal-box p{color:#aaa;margin-top:12px;line-height:1.6}
+.close{float:right;background:none;border:0;color:white;font-size:22px;cursor:pointer}
+@media(max-width:700px){
+.sidebar{position:relative;width:100%;height:auto;padding:15px;border-right:0;border-bottom:1px solid #29243b}
+.logo{margin-bottom:12px}
+.sidebar a{display:inline-block;padding:10px;margin:0 3px}
+.main{margin:0;padding:18px}
+.topbar{align-items:flex-start;flex-direction:column}
+.search{width:100%}
+.welcome{padding:25px}
+.welcome h1{font-size:27px}
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+<div class="logo">DATGUY’S MODDINGHUB</div>
+<a href="#home" class="active" data-page="home">🏠 Home</a>
+<a href="#mods" data-page="mods">📦 Mods</a>
+<a href="#featured" data-page="featured">⭐ Featured</a>
+<a href="#about" data-page="about">ℹ️ About</a>
+</aside>
+
+<main class="main">
+
+<div class="topbar">
+<h2 id="pageTitle">Dashboard</h2>
+<input class="search" id="search" placeholder="Search mods..." aria-label="Search mods">
+</div>
+
+<section class="page active" id="home">
+<div class="welcome">
+<h1>Welcome to DatGuy’s ModdingHub</h1>
+<p>Your home for VR mods, tools and community projects.</p>
+</div>
+<h2 class="heading">Explore the Hub</h2>
+<div class="about">
+Discover community projects and browse the latest mod listings.
+Use the Mods section to find something interesting!
+</div>
+</section>
+
+<section class="page" id="mods">
+<h2 class="heading">All Mods</h2>
+<div class="filters">
+<button class="filter active" data-filter="all">All</button>
+<button class="filter" data-filter="quest">Quest</button>
+<button class="filter" data-filter="tools">Tools</button>
+<button class="filter" data-filter="cosmetics">Cosmetics</button>
+</div>
+<div class="mods" id="modList">
+
+<div class="card" data-category="quest" data-featured="yes">
+<div class="thumbnail">🎮</div>
+<div class="card-content">
+<h3>Quest Project</h3>
+<p>A community VR project listing.</p>
+<span class="tag">QUEST</span>
+<button onclick="showInfo('Quest Project','A community VR project listing. Add your own compatible project details here.')">View Details</button>
+</div>
+</div>
+
+<div class="card" data-category="tools" data-featured="yes">
+<div class="thumbnail">⚙️</div>
+<div class="card-content">
+<h3>Modding Tools</h3>
+<p>Useful tools for mod creators.</p>
+<span class="tag">TOOLS</span>
+<button onclick="showInfo('Modding Tools','A collection of tools for creating and managing your projects.')">View Details</button>
+</div>
+</div>
+
+<div class="card" data-category="cosmetics">
+<div class="thumbnail">✨</div>
+<div class="card-content">
+<h3>Cosmetic Pack</h3>
+<p>Custom cosmetic community creations.</p>
+<span class="tag">COSMETICS</span>
+<button onclick="showInfo('Cosmetic Pack','A collection of original cosmetic projects.')">View Details</button>
+</div>
+</div>
+
+</div>
+<p class="empty" id="empty">No matching mods found.</p>
+</section>
+
+<section class="page" id="featured">
+<h2 class="heading">⭐ Featured Projects</h2>
+<div class="mods" id="featuredList"></div>
+</section>
+
+<section class="page" id="about">
+<h2 class="heading">About</h2>
+<div class="about">
+<h3>DatGuy’s ModdingHub</h3>
+<p>A community hub for VR modding projects, tools and original creations.</p>
+<p>Always check compatibility and only download files from trusted creators.</p>
+</div>
+</section>
+
+<footer>© 2026 DatGuy’s ModdingHub</footer>
+</main>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeInfo()">
+<div class="modal-box">
+<button class="close" onclick="closeInfo()">×</button>
+<h2 id="modalTitle">Project</h2>
+<p id="modalDescription"></p>
+<button class="primary" onclick="closeInfo()">Close</button>
+</div>
+</div>
+
+<script>
+const links=document.querySelectorAll('.sidebar a');
+const pages=document.querySelectorAll('.page');
+const title=document.getElementById('pageTitle');
+
+function navigate(page){
+pages.forEach(p=>p.classList.toggle('active',p.id===page));
+links.forEach(a=>a.classList.toggle('active',a.dataset.page===page));
+const titles={home:'Dashboard',mods:'All Mods',featured:'Featured Projects',about:'About'};
+title.textContent=titles[page]||'Dashboard';
+if(page==='featured')buildFeatured();
+}
+
+links.forEach(a=>{
+a.addEventListener('click',()=>{
+navigate(a.dataset.page);
+});
+});
+
+function showInfo(name,description){
+document.getElementById('modalTitle').textContent=name;
+document.getElementById('modalDescription').textContent=description;
+document.getElementById('modal').classList.add('show');
+}
+function closeInfo(){
+document.getElementById('modal').classList.remove('show');
+}
+
+let activeFilter='all';
+
+function filterMods(){
+const search=document.getElementById('search').value.toLowerCase();
+let visible=0;
+
+document.querySelectorAll('#modList .card').forEach(card=>{
+const matchesSearch=card.innerText.toLowerCase().includes(search);
+const matchesCategory=activeFilter==='all'||card.dataset.category===activeFilter;
+const show=matchesSearch&&matchesCategory;
+card.style.display=show?'':'none';
+if(show)visible++;
+});
+document.getElementById('empty').style.display=visible?'none':'block';
+}
+
+document.getElementById('search').addEventListener('input',filterMods);
+
+document.querySelectorAll('.filter').forEach(button=>{
+button.addEventListener('click',()=>{
+activeFilter=button.dataset.filter;
+document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b===button));
+filterMods();
+});
+});
+
+function buildFeatured(){
+const target=document.getElementById('featuredList');
+target.innerHTML='';
+document.querySelectorAll('#modList .card[data-featured="yes"]').forEach(card=>{
+target.appendChild(card.cloneNode(true));
+});
+}
+</script>
+
+</body>
+</html>
